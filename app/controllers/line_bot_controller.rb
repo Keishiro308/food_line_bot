@@ -228,7 +228,15 @@ class LineBotController < ApplicationController
             hash2=JSON.parse(hash1)
             json = hash2['results']['shop']
             shops=[]
-            unless json.nil?
+            user.update_columns(long:nil, lat:nil)
+            debugger
+            if json.empty?
+              message={
+                type:'text',
+                text:"お店が見つかりませんでした\u{10007B}\u{100027}"
+              }
+              debugger
+            else
               json.each do |json|
                 bubble={
                   type: "bubble",
@@ -343,18 +351,17 @@ class LineBotController < ApplicationController
                 }
                 shops.push(bubble)
               end
-
+              message={
+                type:'flex',
+                altText:'#',
+                contents:{
+                  type: "carousel",
+                  contents: shops
+                }
+              }
             end
 
 
-            message={
-              type:'flex',
-              altText:'#',
-              contents:{
-                type: "carousel",
-                contents: shops
-              }
-            }
           when /.*(こんにちは|こんにちわ).*/
             push="こんにちは\u{100039}、お店を探したいときは、まず「探す」と入力してみてください\u{100041}"
             message={
