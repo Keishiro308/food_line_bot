@@ -229,13 +229,11 @@ class LineBotController < ApplicationController
             json = hash2['results']['shop']
             shops=[]
             user.update_columns(long:nil, lat:nil)
-            debugger
             if json.empty?
               message={
                 type:'text',
                 text:"お店が見つかりませんでした\u{10007B}\u{100027}"
               }
-              debugger
             else
               json.each do |json|
                 bubble={
